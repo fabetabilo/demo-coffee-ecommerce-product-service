@@ -45,11 +45,21 @@ public class CoffeeVariant {
     private Double price;   // !!! TEMPORAL: 'BigDecimal' para precios
 
     @Column(nullable = false)
-    private Boolean available; // true/false, controla la disponibilidad
+    private Integer stock; // stock de formato/variante
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coffee_id", nullable = false)
     @JsonIgnore // evita bucles del superclass
     private Coffee coffee;
+
+
+
+    /**
+     * Obtiene disponibilidad de variante de cafe segun su stock.
+     * @return true para cuando stock > 0, false si stock = 0 o null
+     */
+    public boolean getAvailable() {
+        return this.stock != null && this.stock > 0;
+    }
 
 }

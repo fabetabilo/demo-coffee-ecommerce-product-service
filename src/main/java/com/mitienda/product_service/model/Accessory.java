@@ -31,5 +31,18 @@ public class Accessory extends Product {
     @Column(name = "feature",nullable = false)
     private List<String> features;
 
+    @Column(nullable = false)
+    private Integer stock;
+
+
+
+    /**
+     * Obtiene disponibilidad de accesorio segun stock.
+     * @return true para cuando stock > 0, false si stock = 0 o null
+     */
+    @Override
+    public boolean getAvailable() {
+        return this.stock != null && this.stock > 0;
+    }
 
 }

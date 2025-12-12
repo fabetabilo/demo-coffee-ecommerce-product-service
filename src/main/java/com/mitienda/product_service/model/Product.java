@@ -1,5 +1,6 @@
 package com.mitienda.product_service.model;
 
+import java.beans.Transient;
 import java.util.List;
 
 import jakarta.persistence.CollectionTable;
@@ -60,5 +61,14 @@ public abstract class Product {
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url", nullable = false)
     private List<String> productImages; // URLs de imagenes como lista de strings
+
+
+
+    /**
+     * Evalua el stock del producto global
+     * donde clases heredadas calculan su disponibilidad.
+     */
+    @Transient // no se guarda en DB
+    public abstract boolean getAvailable();
 
 }

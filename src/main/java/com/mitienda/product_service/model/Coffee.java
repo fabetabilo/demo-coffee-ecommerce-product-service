@@ -48,4 +48,22 @@ public class Coffee extends Product {
     private List<CoffeeVariant> formats;
 
 
+
+    /**
+     * Determina la disponibilidad global de cafe en el catalogo.
+     * <p>
+     * Verifica la lista de formatos ({@link CoffeeVariant}) asociados.
+     * El producto se considera disponible (true) si al menos uno de sus
+     * formatos tiene stock disponible.
+     * @return true si existe al menos un formato con stock > 0.
+     * false si no hay formatos definidos o estan todos agotados.
+     */
+    public boolean getAvailable() {
+        if (this.formats == null || this.formats.isEmpty()) {
+            return false;
+        }
+        // recorre lista y revisa que al menos uno tiene stock > 0
+        return formats.stream().anyMatch(variant -> variant.getStock() > 0);
+    }
+
 }
