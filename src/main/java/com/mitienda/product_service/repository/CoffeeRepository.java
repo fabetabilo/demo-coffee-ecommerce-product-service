@@ -1,11 +1,8 @@
 package com.mitienda.product_service.repository;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mitienda.product_service.model.Coffee;
@@ -19,10 +16,8 @@ public interface CoffeeRepository extends JpaRepository<Coffee, Long>{
 
     List<Coffee> findByProcessIgnoreCase(String process);
 
-    @Query("SELECT c FROM Coffee c WHERE LOWER(c.process) IN :processes")
-    List<Coffee> findByProcessInIgnoreCase(@Param("processes") Collection<String> processes);
+    List<Coffee> findByProcessInIgnoreCase(String process);
 
-    @Query("SELECT c FROM Coffee c WHERE c.process IS NULL OR LOWER(c.process) NOT IN :standard")
-    List<Coffee> findByProcessNotInIgnoreCase(@Param("standard") Collection<String> standard);
+    List<Coffee> findByProcessNotInIgnoreCase(List<String> processes);
 
 }
