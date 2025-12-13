@@ -1,5 +1,6 @@
 package com.mitienda.product_service.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,8 +17,8 @@ public interface CoffeeRepository extends JpaRepository<Coffee, Long>{
 
     List<Coffee> findByProcessIgnoreCase(String process);
 
-    List<Coffee> findByProcessInIgnoreCase(String process);
+    List<Coffee> findByProcessInIgnoreCase(Collection<String> process);
 
-    List<Coffee> findByProcessNotInIgnoreCase(List<String> processes);
+    List<Coffee> findByProcessNotInIgnoreCase(Collection<String> processes);
 
 }
