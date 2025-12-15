@@ -2,6 +2,7 @@ package com.mitienda.product_service.service;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,24 +12,16 @@ import com.mitienda.product_service.repository.AccessoryRepository;
 import com.mitienda.product_service.repository.ProductRepository;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository; // inmutable, moderno
     private final AccessoryRepository accessoryRepository;
 
-    public ProductService(
-        ProductRepository productRepository,
-        AccessoryRepository accessoryRepository
-    ) {
-        this.productRepository = productRepository;
-        this.accessoryRepository = accessoryRepository;
-    }
-
     /**
      * Devuelve un producto por su id.
      * @param id identificador de producto
-     * @return Producto
+     * @return (Product) producto
      */
     @Transactional(readOnly = true)
     public Product findProductById(Long id) {
@@ -65,6 +58,14 @@ public class ProductService {
         return accessoryRepository.findAll();
     }
 
+    /**
+     * Devuelve accesorios filtrados por subcategoria. (Ej: 'metodos', 'filtros', 'molinos', 'balanzas', 'teteras' )
+     * @return (List) lista de accesorios de la subcategoria
+     */
+    @Transactional(readOnly = true)
+    public List<Accessory> findAccessoriesBySubcategory(String subcategory) {
+        return accessoryRepository.findBySubcategoryIgnoreCase(subcategory);
+    }
 
 
 
@@ -75,6 +76,7 @@ public class ProductService {
      * @param accessory Entidad accesorio
      * @return (Accessory) guardado
      */
+    @Transactional
     public Accessory saveAccessory(Accessory accessory) {
         return accessoryRepository.save(accessory);
     }
@@ -84,6 +86,7 @@ public class ProductService {
      * Coffee, Accessory, etc.
      * @param id identificador de producto
      */
+    @Transactional
     public void deleteProductById(Long id) {
         if (!productRepository.existsById(id)) {
             throw new RuntimeException("No se puede eliminar: Producto no encontrado con ID: " + id);

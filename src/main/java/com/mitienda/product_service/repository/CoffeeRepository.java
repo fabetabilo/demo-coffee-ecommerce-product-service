@@ -21,4 +21,6 @@ public interface CoffeeRepository extends JpaRepository<Coffee, Long>{
 
     List<Coffee> findByProcessNotInIgnoreCase(Collection<String> processes);
 
+    List<Coffee> findBySubcategoryIgnoreCase(String subcategory);
+
 }

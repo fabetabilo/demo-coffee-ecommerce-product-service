@@ -41,7 +41,7 @@ public class ProductController {
         List<Coffee> coffees;
         
         if (type != null && !type.isBlank()) {
-             coffees = coffeeService.findAllCoffees(); // !! TEMPORAL: implementar findBySubcategory
+             coffees = coffeeService.findBySubcategory(type);
         } else {
             coffees = coffeeService.findAllCoffees();
         }
@@ -63,7 +63,7 @@ public class ProductController {
         List<Accessory> accessories;
 
         if (type != null && !type.isBlank()) {
-            accessories = productService.findAllAccessories();  // !! TEMPORAL: implementar findBySubcategory
+            accessories = productService.findAccessoriesBySubcategory(type);  // !! TEMPORAL: implementar findBySubcategory
         } else {
             accessories = productService.findAllAccessories();
         }

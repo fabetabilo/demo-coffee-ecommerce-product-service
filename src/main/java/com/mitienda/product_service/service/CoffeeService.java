@@ -3,6 +3,7 @@ package com.mitienda.product_service.service;
 import java.util.List;
 import java.util.Locale;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +13,7 @@ import com.mitienda.product_service.repository.CoffeeRepository;
 import com.mitienda.product_service.repository.CoffeeVariantRepository;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class CoffeeService {
     // procesos estandar, cualquier otro cae en "otros"
     private static final List<String> STANDARD_PROCESSES = List.of("lavado", "natural", "honey");
@@ -20,13 +21,6 @@ public class CoffeeService {
     private final CoffeeRepository coffeeRepository;
     private final CoffeeVariantRepository coffeeVariantRepository;
 
-    public CoffeeService(
-        CoffeeRepository coffeeRepository, 
-        CoffeeVariantRepository coffeeVariantRepository
-    ) {
-        this.coffeeRepository = coffeeRepository;
-        this.coffeeVariantRepository = coffeeVariantRepository;
-    }
 
     /**
      * Devuelve solo un cafe por su id.
@@ -46,6 +40,14 @@ public class CoffeeService {
     @Transactional(readOnly = true)
     public List<Coffee> findAllCoffees() {
         return coffeeRepository.findAll();
+    }
+
+    /**
+     * Devuelve cafes por subcategoría (ej: microlotes, origen_unico)
+     */
+    @Transactional(readOnly = true)
+    public List<Coffee> findBySubcategory(String subcategory) {
+        return coffeeRepository.findBySubcategoryIgnoreCase(subcategory);
     }
 
     /**

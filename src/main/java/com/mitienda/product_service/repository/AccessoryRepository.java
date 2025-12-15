@@ -13,4 +13,6 @@ public interface AccessoryRepository extends JpaRepository<Accessory, Long> {
 
     List<Accessory> findByBrand(String brand);
 
+    List<Accessory> findBySubcategoryIgnoreCase(String subcategory);
+
 }
