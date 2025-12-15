@@ -3,8 +3,10 @@ package com.mitienda.product_service.controller;
 import com.mitienda.product_service.dto.*;
 import com.mitienda.product_service.model.Accessory;
 import com.mitienda.product_service.model.Coffee;
+import com.mitienda.product_service.model.Pack;
 import com.mitienda.product_service.model.Product;
 import com.mitienda.product_service.service.CoffeeService;
+import com.mitienda.product_service.service.PackService;
 import com.mitienda.product_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final CoffeeService coffeeService;
+    private final PackService packService;
 
     // ENDPOINTS: LECTURA
 
@@ -73,6 +76,15 @@ public class ProductController {
                 .toList();
 
         return ResponseEntity.ok(dtos);
+    }
+
+    /**
+     * Obtiene todos los packs.
+     */
+    @GetMapping("/packs")
+    public ResponseEntity<List<PackDto>> getAllPacks() {
+        List<Pack> packs = packService.findAllPacks();
+        return ResponseEntity.ok(packs.stream().map(PackDto::fromEntity).toList());
     }
 
     /**
@@ -162,5 +174,29 @@ public class ProductController {
         
         return ResponseEntity.ok(AccessoryDto.fromEntity(updatedAccessory));
     }
+
+    /**
+     * Crea un nuevo pack.
+     */
+    @PostMapping("/packs")
+    public ResponseEntity<PackDto> createPack(@RequestBody CreatePackDto createDto) {
+        Pack saved = packService.savePack(createDto.toEntity());
+        return ResponseEntity.status(HttpStatus.CREATED).body(PackDto.fromEntity(saved));
+    }
+
+    /**
+     * Actualizar un pack existente
+     */
+    @PutMapping("/packs/{id}")
+    public ResponseEntity<PackDto> updatePack(@PathVariable Long id, @RequestBody CreatePackDto inputDto) {
+        
+        inputDto.setId(id);
+
+        Pack packEntity = inputDto.toEntity();
+        Pack updatedPack = packService.savePack(packEntity);
+        
+        return ResponseEntity.ok(PackDto.fromEntity(updatedPack));
+    }
+    
 
 }
