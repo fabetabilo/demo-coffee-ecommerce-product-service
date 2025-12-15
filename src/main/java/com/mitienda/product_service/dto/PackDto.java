@@ -17,7 +17,6 @@ public class PackDto {
     private List<String> productImages;
     private boolean available; // calculado
 
-    private Integer stock;
     private String packDescription;    
     private List<PackItemDto> items;
 
@@ -38,7 +37,6 @@ public class PackDto {
         dto.setProductImages(pack.getProductImages());
         dto.setAvailable(pack.getAvailable());
 
-        dto.setStock(pack.getStock());
         dto.setPackDescription(pack.getPackDescription());
 
         if (pack.getItems() != null) {
