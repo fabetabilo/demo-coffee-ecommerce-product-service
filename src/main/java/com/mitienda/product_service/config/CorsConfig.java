@@ -20,6 +20,12 @@ public class CorsConfig {
                         .allowedMethods("GET", "OPTIONS")
                         .allowedHeaders("*"); // !!! permite tokens, cabeceras
 
+                // Publica Recommendations
+                registry.addMapping("/api/v1/recommendations/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("POST", "OPTIONS")
+                        .allowedHeaders("*");
+
                 // Privada Admin
                 registry.addMapping("/api/v1/admin/**") // Aplica a admin
                         .allowedOrigins("http://localhost:5173")

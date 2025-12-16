@@ -1,6 +1,10 @@
 package com.mitienda.product_service.dto.coffee;
 
 import com.mitienda.product_service.model.Coffee;
+import com.mitienda.product_service.model.enums.FlavorProfile;
+import com.mitienda.product_service.model.enums.RoastIntensity;
+import com.mitienda.product_service.model.enums.SuitableMethod;
+
 import lombok.Data;
 import java.util.List;
 
@@ -24,6 +28,10 @@ public class CoffeeDto {
     private List<String> descriptors;
     
     private List<CoffeeVariantDto> formats;
+
+    private RoastIntensity roastIntensity;
+    private FlavorProfile flavorProfile;
+    private List<SuitableMethod> suitableMethods;
 
     /**
      * Convierte una entidad {@link Coffee} a su representacion publica.
@@ -57,6 +65,11 @@ public class CoffeeDto {
         dto.setProcess(coffee.getProcess());
         dto.setRoastLevel(coffee.getRoastLevel());
         dto.setDescriptors(coffee.getDescriptors());
+
+        // para recommendation
+        dto.setRoastIntensity(coffee.getRoastIntensity());
+        dto.setFlavorProfile(coffee.getFlavorProfile());
+        dto.setSuitableMethods(coffee.getSuitableMethods());
 
         // conversion de lista de formatos
         if (coffee.getFormats() != null) {

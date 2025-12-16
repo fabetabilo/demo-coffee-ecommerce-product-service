@@ -2,6 +2,9 @@ package com.mitienda.product_service.dto.coffee;
 
 import com.mitienda.product_service.model.Coffee;
 import com.mitienda.product_service.model.CoffeeVariant;
+import com.mitienda.product_service.model.enums.SuitableMethod;
+import com.mitienda.product_service.model.enums.FlavorProfile;
+
 import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,10 @@ public class CreateCoffeeDto {
     private List<String> descriptors;
     private List<CreateCoffeeVariantDto> formats; // lista con variantes de formato
 
+    // el campo roastIntensity, se guarda solo segun roastLevel
+    private FlavorProfile flavorProfile;
+    private List<SuitableMethod> suitableMethods;
+
     /**
      * Convierte el DTO en una entidad {@link Coffee} lista para persistir en base de datos.
      * @return {@link Coffee} Entidad coffee.
@@ -45,6 +52,9 @@ public class CreateCoffeeDto {
         coffee.setProcess(this.process);
         coffee.setRoastLevel(this.roastLevel);
         coffee.setDescriptors(this.descriptors);
+
+        coffee.setFlavorProfile(this.flavorProfile);
+        coffee.setSuitableMethods(this.suitableMethods);
 
         // mapeo de variantes
         if (this.formats != null) {

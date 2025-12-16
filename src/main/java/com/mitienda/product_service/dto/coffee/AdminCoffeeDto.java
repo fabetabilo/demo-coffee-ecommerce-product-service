@@ -1,6 +1,10 @@
 package com.mitienda.product_service.dto.coffee;
 
 import com.mitienda.product_service.model.Coffee;
+import com.mitienda.product_service.model.enums.FlavorProfile;
+import com.mitienda.product_service.model.enums.RoastIntensity;
+import com.mitienda.product_service.model.enums.SuitableMethod;
+
 import lombok.Data;
 import java.util.List;
 
@@ -23,6 +27,10 @@ public class AdminCoffeeDto {
     private List<String> descriptors;
     
     private List<AdminCoffeeVariantDto> formats; // lista de variantes de admin (las que tienen stock)
+
+    private RoastIntensity roastIntensity;
+    private FlavorProfile flavorProfile;
+    private List<SuitableMethod> suitableMethods; 
 
     /**
      * Convierte una entidad {@link Coffee} a su DTO para administracion.
@@ -53,6 +61,10 @@ public class AdminCoffeeDto {
         dto.setProcess(coffee.getProcess());
         dto.setRoastLevel(coffee.getRoastLevel());
         dto.setDescriptors(coffee.getDescriptors());
+
+        dto.setRoastIntensity(coffee.getRoastIntensity());
+        dto.setFlavorProfile(coffee.getFlavorProfile());
+        dto.setSuitableMethods(coffee.getSuitableMethods());
 
         if (coffee.getFormats() != null) {
             List<AdminCoffeeVariantDto> variants = coffee.getFormats().stream()

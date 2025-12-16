@@ -2,8 +2,10 @@ package com.mitienda.product_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.mitienda.product_service", "com.mitienda.recommendation"})
 public class ProductServiceApplication {
 
 	public static void main(String[] args) {

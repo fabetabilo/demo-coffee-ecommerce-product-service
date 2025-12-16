@@ -2,13 +2,21 @@ package com.mitienda.product_service.model;
 
 import java.util.List;
 
+import com.mitienda.product_service.model.enums.SuitableMethod;
+import com.mitienda.product_service.model.enums.FlavorProfile;
+import com.mitienda.product_service.model.enums.RoastIntensity;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,6 +55,19 @@ public class Coffee extends Product {
     @OneToMany(mappedBy = "coffee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CoffeeVariant> formats;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "roast_intensity")
+    private RoastIntensity roastIntensity; // se calcula con roastLevel, LIGHT, MEDIUM o DARK
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "flavor_profile")
+    private FlavorProfile flavorProfile; // ingresado manualmente
+
+    @ElementCollection(targetClass = SuitableMethod.class)
+    @CollectionTable(name = "coffee_suitable_methods", joinColumns = @JoinColumn(name = "coffee_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "method")
+    private List<SuitableMethod> suitableMethods; // ingresado manualmente
 
 
     /**
@@ -64,6 +85,23 @@ public class Coffee extends Product {
         }
         // recorre lista y revisa que al menos uno tiene stock > 0
         return formats.stream().anyMatch(variant -> variant.getStock() > 0);
+    }
+
+    /**
+     * Calcula el nivel de tueste (LIGHT, MEDIUM o DARK) según roastLevel desde 1 a 7.
+     */
+    @PrePersist
+    @PreUpdate
+    public void calculateRoastIntensity() {
+        if (this.roastLevel != null) {
+            if (this.roastLevel <= 2) {
+                this.roastIntensity = RoastIntensity.LIGHT;
+            } else if (this.roastLevel <= 5) {
+                this.roastIntensity = RoastIntensity.MEDIUM;
+            } else {
+                this.roastIntensity = RoastIntensity.DARK;
+            }
+        }
     }
 
 }
