@@ -1,6 +1,8 @@
 package com.mitienda.product_service.controller;
 
-import com.mitienda.product_service.dto.*;
+import com.mitienda.product_service.dto.accessory.AccessoryDto;
+import com.mitienda.product_service.dto.coffee.CoffeeDto;
+import com.mitienda.product_service.dto.pack.PackDto;
 import com.mitienda.product_service.model.Accessory;
 import com.mitienda.product_service.model.Coffee;
 import com.mitienda.product_service.model.Pack;
@@ -9,24 +11,20 @@ import com.mitienda.product_service.service.CoffeeService;
 import com.mitienda.product_service.service.PackService;
 import com.mitienda.product_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+// Controller dedicado a la tienda, publico y permitirá sólo acciones de usuarios de tienda.
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/v1/store/products")
 @RequiredArgsConstructor // inyeccion de dependencias
-public class ProductController {
+public class ProductStoreController {
 
     private final ProductService productService;
     private final CoffeeService coffeeService;
@@ -87,6 +85,7 @@ public class ProductController {
         return ResponseEntity.ok(packs.stream().map(PackDto::fromEntity).toList());
     }
 
+
     /**
      * Obtiene un producto por ID.
      * Detecta automaticamente si es cafe o accesorio para devolver el JSON correcto.
@@ -100,6 +99,8 @@ public class ProductController {
             return ResponseEntity.ok(CoffeeDto.fromEntity(coffee));
         } else if (product instanceof Accessory accessory) {
             return ResponseEntity.ok(AccessoryDto.fromEntity(accessory));
+        } else if (product instanceof Pack pack) {
+            return ResponseEntity.ok(PackDto.fromEntity(pack));
         } else {
             // fallback
             return ResponseEntity.ok(product);
@@ -109,94 +110,6 @@ public class ProductController {
 
 
 
-
-
-
-    // ENDPOINTS: ESCRITURA
-
-    /**
-     * Eliminar cualquier producto.
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProductById(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * Crear un nuevo cafe.
-     */
-    @PostMapping("/coffees")
-    public ResponseEntity<CoffeeDto> createCoffee(@RequestBody CreateCoffeeDto inputDto) {
-        
-        Coffee coffeeEntity = inputDto.toEntity();
-        
-        Coffee savedCoffee = coffeeService.saveCoffee(coffeeEntity);
-        
-        // Entidad a -> DTO Respuesta
-        return new ResponseEntity<>(CoffeeDto.fromEntity(savedCoffee), HttpStatus.CREATED);
-
-    }
-
-    /**
-     * Actualizar un cafe existente.
-     */
-    @PutMapping("/coffees/{id}")
-    public ResponseEntity<CoffeeDto> updateCoffee(@PathVariable Long id, @RequestBody CreateCoffeeDto inputDto) {
-        // Aseguramos que el ID del body coincida con la URL
-        inputDto.setId(id);
-        
-        Coffee coffeeEntity = inputDto.toEntity();
-        Coffee updatedCoffee = coffeeService.saveCoffee(coffeeEntity);
-        
-        return ResponseEntity.ok(CoffeeDto.fromEntity(updatedCoffee));
-    }
-
-    /**
-     * Crear un nuevo accesorio.
-     */
-    @PostMapping("/accessories")
-    public ResponseEntity<AccessoryDto> createAccessory(@RequestBody CreateAccessoryDto inputDto) {
-        Accessory accessoryEntity = inputDto.toEntity();
-        Accessory savedAccessory = productService.saveAccessory(accessoryEntity);
-        return new ResponseEntity<>(AccessoryDto.fromEntity(savedAccessory), HttpStatus.CREATED);
-    }
-
-    /**
-     * Actualizar un accesorio existente.
-     */
-    @PutMapping("/accessories/{id}")
-    public ResponseEntity<AccessoryDto> updateAccessory(@PathVariable Long id, @RequestBody CreateAccessoryDto inputDto) {
-        inputDto.setId(id);
-        
-        Accessory accessoryEntity = inputDto.toEntity();
-        Accessory updatedAccessory = productService.saveAccessory(accessoryEntity);
-        
-        return ResponseEntity.ok(AccessoryDto.fromEntity(updatedAccessory));
-    }
-
-    /**
-     * Crea un nuevo pack.
-     */
-    @PostMapping("/packs")
-    public ResponseEntity<PackDto> createPack(@RequestBody CreatePackDto createDto) {
-        Pack saved = packService.savePack(createDto.toEntity());
-        return ResponseEntity.status(HttpStatus.CREATED).body(PackDto.fromEntity(saved));
-    }
-
-    /**
-     * Actualizar un pack existente
-     */
-    @PutMapping("/packs/{id}")
-    public ResponseEntity<PackDto> updatePack(@PathVariable Long id, @RequestBody CreatePackDto inputDto) {
-        
-        inputDto.setId(id);
-
-        Pack packEntity = inputDto.toEntity();
-        Pack updatedPack = packService.savePack(packEntity);
-        
-        return ResponseEntity.ok(PackDto.fromEntity(updatedPack));
-    }
     
 
 }

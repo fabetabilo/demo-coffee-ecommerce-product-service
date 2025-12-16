@@ -1,4 +1,4 @@
-package com.mitienda.product_service.dto;
+package com.mitienda.product_service.dto.accessory;
 
 import com.mitienda.product_service.model.Accessory;
 import lombok.Data;
@@ -29,7 +29,7 @@ public class AccessoryDto {
      * (`brand`, `features`).
      * Utiliza el método {@code getAvailable()} para exponer la disponibilidad como boolean.
      * @param accessory {@link Accessory} Entidad persistente en base de datos.
-     * @return DTO con campos mapeados: id, name, description, additionalDescription,
+     * @return {@link AccessoryDto} con campos mapeados: id, name, description, additionalDescription,
      * price, category, subcategory, productImages, available, brand, features
      */
     public static AccessoryDto fromEntity(Accessory accessory) {

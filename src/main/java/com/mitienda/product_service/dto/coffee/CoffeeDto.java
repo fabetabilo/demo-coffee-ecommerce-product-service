@@ -1,4 +1,4 @@
-package com.mitienda.product_service.dto;
+package com.mitienda.product_service.dto.coffee;
 
 import com.mitienda.product_service.model.Coffee;
 import lombok.Data;
@@ -26,16 +26,16 @@ public class CoffeeDto {
     private List<CoffeeVariantDto> formats;
 
     /**
-     * Convierte una entidad {@link Coffee} a su representación DTO.
+     * Convierte una entidad {@link Coffee} a su representacion publica.
      * <p>
-     * Mapea los campos de la superclase (id, name, description, additionalDescription,
-     * price, category, subcategory, productImages) y los campos específicos de café
-     * (origin, process, roastLevel, descriptors).
-     * Convierte la lista de formatos a {@link CoffeeVariantDto} mediante
-     * {@code CoffeeVariantDto.fromEntity} cuando esté presente.
-     * Utiliza el método {@code getAvailable()} para exponer la disponibilidad como boolean.
-     * @param coffee {@link Coffee} Entidad persistente con sus variantes en base de datos.
-     * @return DTO con campos mapeados e incluyendo la lista `formats` como {@link CoffeeVariantDto}
+     * Mapea los campos heredados (id, name, description, additionalDescription,
+     * price, category, subcategory, productImages) y expone {@code available}
+     * segun {@link Coffee#getAvailable()}.
+     * Incorpora los atributos especificos del cafe (origin, process, roastLevel,
+     * descriptors) y convierte las variantes a {@link CoffeeVariantDto} mediante
+     * {@link CoffeeVariantDto#fromEntity} cuando existan formatos.
+     * @param coffee {@link Coffee} entidad persistente con datos de producto.
+     * @return {@link CoffeeDto} listo para la vista publica, incluyendo la lista `formats`.
      */
     public static CoffeeDto fromEntity(Coffee coffee) {
         

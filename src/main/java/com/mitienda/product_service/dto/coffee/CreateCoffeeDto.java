@@ -1,4 +1,4 @@
-package com.mitienda.product_service.dto;
+package com.mitienda.product_service.dto.coffee;
 
 import com.mitienda.product_service.model.Coffee;
 import com.mitienda.product_service.model.CoffeeVariant;

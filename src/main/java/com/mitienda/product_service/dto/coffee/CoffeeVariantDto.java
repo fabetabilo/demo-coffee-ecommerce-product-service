@@ -1,4 +1,4 @@
-package com.mitienda.product_service.dto;
+package com.mitienda.product_service.dto.coffee;
 
 import com.mitienda.product_service.model.CoffeeVariant;
 import lombok.Data;
@@ -13,11 +13,12 @@ public class CoffeeVariantDto {
     private boolean available; 
 
     /**
-     * Convierte una entidad {@link CoffeeVariant} a representación DTO.
+     * Convierte una entidad {@link CoffeeVariant} a su DTO publico.
      * <p>
-     * Utiliza método {@code getAvailable()} para exponer un boolean según su stock.
-     * @param variant {@link CoffeeVariant} Entidad persistente en base de datos.
-     * @return DTO; label, precio, gramos, disponibilidad
+     * Mapea los atributos de la variante (id, label, grams, price) y expone la
+     * disponibilidad usando {@link CoffeeVariant#getAvailable()} para reflejar el stock.
+     * @param variant {@link CoffeeVariant} variante persistida asociada a un cafe.
+     * @return {@link CoffeeVariantDto} con label, gramos, precio y disponibilidad.
      */
     public static CoffeeVariantDto fromEntity(CoffeeVariant variant) {
         

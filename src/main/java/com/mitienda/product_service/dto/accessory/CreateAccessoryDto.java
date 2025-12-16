@@ -1,4 +1,4 @@
-package com.mitienda.product_service.dto;
+package com.mitienda.product_service.dto.accessory;
 
 import com.mitienda.product_service.model.Accessory;
 
