@@ -13,11 +13,20 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // !! Aplica a todos los endpoint
+                
+                // Publica Store
+                registry.addMapping("/api/v1/store/**") // !! Aplica a todos los endpoint de store
                         .allowedOrigins("http://localhost:5173") // :5173 react-vite
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "OPTIONS")
                         .allowedHeaders("*"); // !!! permite tokens, cabeceras
-                        // .allowCredentials(true)
+
+                // Privada Admin
+                registry.addMapping("/api/v1/admin/**") // Aplica a admin
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
+                        // .allowCredentials(true);
+
             }
         };
     }
