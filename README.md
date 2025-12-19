@@ -1,4 +1,6 @@
-# Product Service - Coffee E-commerce
+# Product Service - Coffee Ecommerce
+
+Documentación de servicio: Swagger
 
 ## Objetivo
 
@@ -10,6 +12,8 @@ Servicio encargado de la gestión del catálogo, inventario y reglas de negocio 
 * **Arquitectura DDD Pragmática:** Separación clara de contextos y lógica de negocio mediante Agregados.
 * **Seguridad de Datos:** Implementación de **DTO Pattern** con separación estricta entre vistas públicas (Tienda) y privadas (Admin).
 * **Control de Stock:** Lógica de disponibilidad calculada para clientes vs. inventario real para administradores.
+
+* **Recomendaciones de Producto:** Lógica simple de recomendaciones que sugiere cafés según quiz.
 
 ## Stack Tecnológico
 
@@ -29,6 +33,9 @@ Se implementó una segregación de endpoints basada en la audiencia:
     * *Seguridad:* (NO implementado) Requiere privilegios de administrador.
     * *Respuesta:* Devuelve `AdminPackDto`, `AdminCoffeeDto` con `stock: 15`.
 
+* **Recommendation API (`/api/v1/recommendations`):** Recomendaciones personalizadas de producto.
+    * *Método principal:* `POST /match` que recibe un `CoffeeQuizDto` y devuelve una lista de `CoffeeDto`.
+
 ## Endpoints
 
 Utiliza Postman para pruebas: https://www.postman.com/
@@ -36,6 +43,7 @@ Utiliza Postman para pruebas: https://www.postman.com/
 Notas rápidas:
 - `Store` devuelve DTOs públicos con `available` calculado; oculta `stock`.
 - `Admin` devuelve DTOs completos incluyendo `stock` y variantes con inventario.
+- `Recommendation` devuelve lista de `CoffeeDto` públicos.
 
 | API | Método | Ruta | Query Params | Descripción | DTO/Respuesta |
 | - | - | - | - | - | - |
@@ -54,6 +62,7 @@ Notas rápidas:
 | Admin | GET | `/api/v1/admin/products/packs` | — | Lista packs con todos sus campos | `AdminPackDto[]` |
 | Admin | POST | `/api/v1/admin/products/packs` | — | Crea un pack | `AdminPackDto` (`201 Created`) |
 | Admin | PUT | `/api/v1/admin/products/packs/{id}` | — | Actualiza un pack existente | `AdminPackDto` |
+| Recommendation | POST | `/api/v1/recommendations/match` | — | Devuelve lista de cafés recomendados según quiz (`CoffeeQuizDto`) | `CoffeeDto[]` |
 
 
 ## Requisitos Previos
